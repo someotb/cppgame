@@ -3,6 +3,7 @@
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <algorithm>
 
 Player::Player(const float radius, const std::size_t point_count)
 {
@@ -16,7 +17,8 @@ Player::Player(const float radius, const std::size_t point_count)
 void Player::create_bullet()
 {
     Bullet bullet(3.0f, 50, 1, get_pos());
-    bullets.push_back(bullet);
+    m_bullets.push_back(bullet);
+    m_bullets.erase(std::remove_if(m_bullets.begin(), m_bullets.end(), [](Bullet& b){ return b.bullet_is_out(); }), m_bullets.end());
 }
 
 void Player::update_actions(sf::RenderWindow &window)
@@ -25,7 +27,7 @@ void Player::update_actions(sf::RenderWindow &window)
     window.draw(m_player);
 
     // BULLET
-    for (auto &b : bullets)
+    for (auto &b : m_bullets)
     {
         b.move_bullet();
         window.draw(b.get_bullet());
@@ -60,4 +62,12 @@ Bullet::Bullet(const float radius, const float point_count, const float velocity
 void Bullet::move_bullet()
 {
     m_bullet.move(0, -m_velocity);
+}
+
+bool Bullet::bullet_is_out() const
+{
+    auto bulletPos = get_pos();
+    if (bulletPos.x < 0 || bulletPos.y < 0)
+        return true;
+    return false;
 }

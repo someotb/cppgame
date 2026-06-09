@@ -15,6 +15,11 @@ class Bullet
     public:
         void move_bullet();
 
+        bool bullet_is_out() const;
+
+        void set_pos(const float x, const float y) { m_bullet.setPosition(x, y); }
+        sf::Vector2f get_pos() const { return m_bullet.getPosition(); }
+
         sf::CircleShape get_bullet() { return m_bullet; }
 
         Bullet(const float radius, const float point_count, const float velocity, const sf::Vector2f current_pos);
@@ -27,7 +32,7 @@ class Player
         sf::CircleShape m_player;
         float m_speed;
         float m_dt;
-        std::vector<Bullet> bullets;
+        std::vector<Bullet> m_bullets;
     public:
         void actions_handler();
 
