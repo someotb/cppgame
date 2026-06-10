@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     window.setFramerateLimit(240);
 
     Player player(10, 100);
-    player.set_speed(1000.0f);
+    player.set_speed(700.0f);
     sf::Clock clock;
 
     while (window.isOpen())

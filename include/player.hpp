@@ -12,9 +12,9 @@ class Bullet
 {
     private:
         sf::CircleShape m_bullet;
-        float m_velocity = 200;
+        float m_velocity;
     public:
-        void move_bullet();
+        void move_bullet(const float dt);
 
         bool bullet_is_out() const;
 

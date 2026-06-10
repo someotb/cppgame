@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <algorithm>
+#include <memory>
 
 Player::Player(const float radius, const std::size_t point_count)
 {
@@ -16,7 +17,7 @@ Player::Player(const float radius, const std::size_t point_count)
 
 void Player::create_bullet()
 {
-    Bullet bullet(3.0f, 50, 1, get_pos());
+    Bullet bullet(10.0f, 100, 1000, get_pos());
     m_bullets.push_back(bullet);
     m_bullets.erase(std::remove_if(m_bullets.begin(), m_bullets.end(), [](Bullet& b){ return b.bullet_is_out(); }), m_bullets.end());
 }
@@ -29,13 +30,15 @@ void Player::update_actions(sf::RenderWindow &window)
     // BULLET
     for (auto &b : m_bullets)
     {
-        b.move_bullet();
+        b.move_bullet(m_dt);
         window.draw(b.get_bullet());
     }
 }
 
 void Player::actions_handler(sf::RenderWindow &window)
 {
+    static bool space_was_pressed = false;
+    bool space_pressed_now = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
     auto win_size = window.getSize();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) and not player_out(win_size, sf::Keyboard::W))
         m_player.move(0.0f, -m_speed * m_dt);
@@ -45,8 +48,9 @@ void Player::actions_handler(sf::RenderWindow &window)
         m_player.move(0.0f, m_speed * m_dt);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) and not player_out(win_size, sf::Keyboard::D))
         m_player.move(m_speed * m_dt, 0.0f);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    if (space_was_pressed == false and space_pressed_now == true)
         create_bullet();
+    space_was_pressed = space_pressed_now;
 }
 
 bool Player::player_out(sf::Vector2u &win_size, const sf::Keyboard::Key &direction)
@@ -68,15 +72,15 @@ Bullet::Bullet(const float radius, const float point_count, const float velocity
     m_bullet.setPosition(current_pos);
     m_bullet.setRadius(radius);
     m_bullet.setPointCount(point_count);
-    m_bullet.setFillColor(sf::Color::White);
+    m_bullet.setFillColor(sf::Color::Transparent);
     m_bullet.setOutlineColor(sf::Color::Magenta);
-    m_bullet.setOutlineThickness(5);
+    m_bullet.setOutlineThickness(1);
     m_velocity = velocity;
 }
 
-void Bullet::move_bullet()
+void Bullet::move_bullet(const float dt)
 {
-    m_bullet.move(0, -m_velocity);
+    m_bullet.move(0, -m_velocity * dt);
 }
 
 bool Bullet::bullet_is_out() const
