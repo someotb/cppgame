@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Window.hpp>
 #include <cstddef>
 #include <ctime>
@@ -34,7 +35,9 @@ class Player
         float m_dt;
         std::vector<Bullet> m_bullets;
     public:
-        void actions_handler();
+        void actions_handler(sf::RenderWindow &window);
+
+        bool player_out(sf::Vector2u &win_size, const sf::Keyboard::Key &direction);
 
         void create_bullet();
 

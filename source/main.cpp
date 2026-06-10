@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
                 window.close();
 
         window.clear(sf::Color::Black);
-        player.actions_handler();
+        player.actions_handler(window);
         player.update_actions(window);
         window.display();
     }

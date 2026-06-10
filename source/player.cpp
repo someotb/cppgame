@@ -34,18 +34,33 @@ void Player::update_actions(sf::RenderWindow &window)
     }
 }
 
-void Player::actions_handler()
+void Player::actions_handler(sf::RenderWindow &window)
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        m_player.move(0, -m_speed * m_dt);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        m_player.move(-m_speed * m_dt, 0);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        m_player.move(0, m_speed * m_dt);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        m_player.move(m_speed * m_dt, 0);
+    auto win_size = window.getSize();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) and not player_out(win_size, sf::Keyboard::W))
+        m_player.move(0.0f, -m_speed * m_dt);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) and not player_out(win_size, sf::Keyboard::A))
+        m_player.move(-m_speed * m_dt, 0.0f);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) and not player_out(win_size, sf::Keyboard::S))
+        m_player.move(0.0f, m_speed * m_dt);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) and not player_out(win_size, sf::Keyboard::D))
+        m_player.move(m_speed * m_dt, 0.0f);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         create_bullet();
+}
+
+bool Player::player_out(sf::Vector2u &win_size, const sf::Keyboard::Key &direction)
+{
+    auto player_pos = get_pos();
+    if ((direction == sf::Keyboard::W) and (player_pos.y + m_speed * m_dt < 0.0f))
+        return true;
+    else if ((direction == sf::Keyboard::A) and (player_pos.x + m_speed * m_dt < 0.0f))
+        return true;
+    else if ((direction == sf::Keyboard::S) and (player_pos.y + m_speed * m_dt > win_size.y))
+        return true;
+    else if ((direction == sf::Keyboard::D) and (player_pos.x + m_speed * m_dt > win_size.x))
+        return true;
+    else return false;
 }
 
 Bullet::Bullet(const float radius, const float point_count, const float velocity, const sf::Vector2f current_pos)
