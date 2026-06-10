@@ -4,7 +4,6 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <algorithm>
-#include <memory>
 
 Player::Player(const float radius, const std::size_t point_count)
 {
