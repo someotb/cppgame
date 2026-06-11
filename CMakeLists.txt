@@ -9,6 +9,8 @@ set(SRC_DIR ${CMAKE_SOURCE_DIR}/source)
 set(INC_DIR ${CMAKE_SOURCE_DIR}/include)
 
 set(SRC_BIN
+  ${SRC_DIR}/enemy.cpp
+  ${SRC_DIR}/common.cpp
   ${SRC_DIR}/player.cpp
   ${SRC_DIR}/main.cpp
 )
