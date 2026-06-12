@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common.hpp"
+
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Keyboard.hpp>
@@ -37,6 +38,7 @@ private:
   float m_speed;
   float m_dt;
   std::vector<Bullet> m_bullets;
+  StatusBar m_bar;
 
 public:
   void actions_handler(sf::RenderWindow &window);
@@ -46,6 +48,8 @@ public:
   void create_bullet();
 
   void update_actions(sf::RenderWindow &window);
+
+  void status_bar(sf::RenderWindow &window);
 
   void set_size(const float radius, const std::size_t point_count) {
     m_player.setRadius(radius);

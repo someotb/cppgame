@@ -3,6 +3,9 @@
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Text.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <algorithm>
 
@@ -13,6 +16,7 @@ Player::Player(const float radius, const std::size_t point_count)
   m_player.setOutlineColor(sf::Color::Magenta);
   m_player.setOutlineThickness(1);
   m_player.setFillColor(sf::Color::White);
+  StatusBar bar;
 }
 
 void Player::create_bullet() {
@@ -27,6 +31,9 @@ void Player::update_actions(sf::RenderWindow &window) {
   // PLAYER
   window.draw(m_player);
 
+  // STATUS BAR
+  window.draw(m_bar.m_statusBar);
+
   // BULLET
   for (auto &b : m_bullets) {
     b.move_bullet(m_dt);
@@ -34,21 +41,32 @@ void Player::update_actions(sf::RenderWindow &window) {
   }
 }
 
+void Player::status_bar(sf::RenderWindow &window) {
+  sf::Vector2u winSize = window.getSize();
+  sf::Vector2u statusBar_pos(winSize.x - 150, winSize.y - 30);
+  m_bar.m_statusBar.setPosition(statusBar_pos.x, statusBar_pos.y);
+  m_bar.m_statusBar.setString("Healt: " + std::to_string(getHealth()));
+}
+
 void Player::actions_handler(sf::RenderWindow &window) {
+  // Status Bar
+  status_bar(window);
+
+  // Player movement
   static bool space_was_pressed = false;
   bool space_pressed_now = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
-  auto win_size = window.getSize();
+  auto winSize = window.getSize();
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) and
-      not player_out(win_size, sf::Keyboard::W))
+      not player_out(winSize, sf::Keyboard::W))
     m_player.move(0.0f, -m_speed * m_dt);
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) and
-      not player_out(win_size, sf::Keyboard::A))
+      not player_out(winSize, sf::Keyboard::A))
     m_player.move(-m_speed * m_dt, 0.0f);
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) and
-      not player_out(win_size, sf::Keyboard::S))
+      not player_out(winSize, sf::Keyboard::S))
     m_player.move(0.0f, m_speed * m_dt);
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) and
-      not player_out(win_size, sf::Keyboard::D))
+      not player_out(winSize, sf::Keyboard::D))
     m_player.move(m_speed * m_dt, 0.0f);
   if (space_was_pressed == false and space_pressed_now == true)
     create_bullet();

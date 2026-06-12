@@ -1,3 +1,4 @@
+#include "common.hpp"
 #include "player.hpp"
 
 #include <SFML/Graphics.hpp>
@@ -14,8 +15,12 @@ int main(int argc, char *argv[]) {
   sf::RenderWindow window(sf::VideoMode(800, 600), "cppgame");
   window.setFramerateLimit(240);
 
+  // Player
   Player player(10, 100);
   player.set_speed(700.0f);
+
+  // Status bar
+  StatusBar bar;
   sf::Clock clock;
 
   while (window.isOpen()) {
