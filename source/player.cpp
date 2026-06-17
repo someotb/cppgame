@@ -27,7 +27,13 @@ void Player::create_bullet() {
                   m_bullets.end());
 }
 
-void Player::update_actions(sf::RenderWindow &window) {
+bool Player::is_player_alive() {
+  if (getHealth() <= 0)
+    return false;
+  return true;
+}
+
+void Player::drow_objects(sf::RenderWindow &window) {
   // PLAYER
   window.draw(m_player);
 
@@ -48,7 +54,7 @@ void Player::status_bar(sf::RenderWindow &window) {
   m_bar.m_statusBar.setString("Healt: " + std::to_string(getHealth()));
 }
 
-void Player::actions_handler(sf::RenderWindow &window) {
+void Player::actions_handler(sf::RenderWindow &window, GlobalFlags& gFlags) {
   // Status Bar
   status_bar(window);
 
@@ -71,6 +77,12 @@ void Player::actions_handler(sf::RenderWindow &window) {
   if (space_was_pressed == false and space_pressed_now == true)
     create_bullet();
   space_was_pressed = space_pressed_now;
+
+  // Player status
+  if (!is_player_alive())
+    gFlags.player_alive = false;
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+    setHealth(getHealth() - 1);
 }
 
 bool Player::player_out(sf::Vector2u &win_size,

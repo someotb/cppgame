@@ -4,6 +4,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <atomic>
 
 class Object {
 protected:
@@ -32,4 +33,9 @@ public:
 
   StatusBar();
   ~StatusBar() = default;
+};
+
+struct GlobalFlags {
+  std::atomic_bool quit{false};
+  std::atomic_bool player_alive{true};
 };

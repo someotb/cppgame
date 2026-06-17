@@ -41,13 +41,15 @@ private:
   StatusBar m_bar;
 
 public:
-  void actions_handler(sf::RenderWindow &window);
+  void actions_handler(sf::RenderWindow &window, GlobalFlags& gFlags);
 
   bool player_out(sf::Vector2u &win_size, const sf::Keyboard::Key &direction);
 
   void create_bullet();
 
-  void update_actions(sf::RenderWindow &window);
+  bool is_player_alive();
+
+  void drow_objects(sf::RenderWindow &window);
 
   void status_bar(sf::RenderWindow &window);
 

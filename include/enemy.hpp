@@ -1,7 +1,3 @@
 #pragma once
 
-class CommonEnemy
-{
-    private:
-
-};
+class CommonEnemy {};

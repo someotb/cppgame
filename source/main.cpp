@@ -15,6 +15,9 @@ int main(int argc, char *argv[]) {
   sf::RenderWindow window(sf::VideoMode(800, 600), "cppgame");
   window.setFramerateLimit(240);
 
+  // Global Flags
+  GlobalFlags gFlags;
+
   // Player
   Player player(10, 100);
   player.set_speed(700.0f);
@@ -32,9 +35,12 @@ int main(int argc, char *argv[]) {
         window.close();
 
     window.clear(sf::Color::Black);
-    player.actions_handler(window);
-    player.update_actions(window);
+    player.actions_handler(window, gFlags);
+    player.drow_objects(window);
     window.display();
+
+    if (!gFlags.player_alive)
+        break;
   }
 
   return 0;
