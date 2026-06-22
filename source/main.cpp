@@ -18,9 +18,12 @@ int main(int argc, char *argv[]) {
   // Global Flags
   GlobalFlags gFlags;
 
-  // Player
-  Player player(10, 100);
+  // Players
+  Player player(10, 100, Layout(LayoutType::WASD));
   player.set_speed(700.0f);
+
+  Player enemy(10, 100, Layout(LayoutType::IJKL));
+  enemy.set_speed(700.0f);
 
   // Status bar
   StatusBar bar;
@@ -28,15 +31,23 @@ int main(int argc, char *argv[]) {
 
   while (window.isOpen()) {
     float dt = clock.restart().asSeconds();
+
     player.set_dt(dt);
+    enemy.set_dt(dt);
+
     sf::Event event;
     while (window.pollEvent(event))
       if (event.type == sf::Event::Closed)
         window.close();
 
     window.clear(sf::Color::Black);
+
     player.actions_handler(window, gFlags);
     player.drow_objects(window);
+
+    enemy.actions_handler(window, gFlags);
+    enemy.drow_objects(window);
+
     window.display();
 
     if (!gFlags.player_alive)

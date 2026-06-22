@@ -9,8 +9,9 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <algorithm>
 
-Player::Player(const float radius, const std::size_t point_count)
-    : Object(100) {
+Player::Player(const float radius, const std::size_t point_count,
+               const Layout layout)
+    : Object(100), m_layout(std::move(layout)) {
   m_player.setRadius(radius);
   m_player.setPointCount(point_count);
   m_player.setOutlineColor(sf::Color::Magenta);
@@ -54,49 +55,54 @@ void Player::status_bar(sf::RenderWindow &window) {
   m_bar.m_statusBar.setString("Healt: " + std::to_string(getHealth()));
 }
 
-void Player::actions_handler(sf::RenderWindow &window, GlobalFlags& gFlags) {
+void Player::actions_handler(sf::RenderWindow &window, GlobalFlags &gFlags) {
   // Status Bar
   status_bar(window);
 
   // Player movement
-  static bool space_was_pressed = false;
-  bool space_pressed_now = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
-  auto winSize = window.getSize();
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) and
-      not player_out(winSize, sf::Keyboard::W))
-    m_player.move(0.0f, -m_speed * m_dt);
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) and
-      not player_out(winSize, sf::Keyboard::A))
-    m_player.move(-m_speed * m_dt, 0.0f);
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) and
-      not player_out(winSize, sf::Keyboard::S))
-    m_player.move(0.0f, m_speed * m_dt);
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) and
-      not player_out(winSize, sf::Keyboard::D))
-    m_player.move(m_speed * m_dt, 0.0f);
-  if (space_was_pressed == false and space_pressed_now == true)
-    create_bullet();
-  space_was_pressed = space_pressed_now;
+  movement_handler(window);
 
   // Player status
   if (!is_player_alive())
     gFlags.player_alive = false;
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
     setHealth(getHealth() - 1);
+}
+
+void Player::movement_handler(sf::RenderWindow &window) {
+  static bool shoot_was_pressed = false;
+  bool shoot_pressed_now = sf::Keyboard::isKeyPressed(m_layout.m_shoot);
+  auto winSize = window.getSize();
+  if (sf::Keyboard::isKeyPressed(m_layout.m_forward) and
+      not player_out(winSize, m_layout.m_forward))
+    m_player.move(0.0f, -m_speed * m_dt);
+  if (sf::Keyboard::isKeyPressed(m_layout.m_leftward) and
+      not player_out(winSize, m_layout.m_leftward))
+    m_player.move(-m_speed * m_dt, 0.0f);
+  if (sf::Keyboard::isKeyPressed(m_layout.m_backward) and
+      not player_out(winSize, m_layout.m_backward))
+    m_player.move(0.0f, m_speed * m_dt);
+  if (sf::Keyboard::isKeyPressed(m_layout.m_rightward) and
+      not player_out(winSize, m_layout.m_rightward))
+    m_player.move(m_speed * m_dt, 0.0f);
+  if (shoot_was_pressed == false and shoot_pressed_now == true)
+    create_bullet();
+  shoot_was_pressed = shoot_pressed_now;
 }
 
 bool Player::player_out(sf::Vector2u &win_size,
                         const sf::Keyboard::Key &direction) {
   auto player_pos = get_pos();
-  if ((direction == sf::Keyboard::W) and (player_pos.y + m_speed * m_dt < 0.0f))
+  if ((direction == m_layout.m_forward) and
+      (player_pos.y + m_speed * m_dt < 0.0f))
     return true;
-  else if ((direction == sf::Keyboard::A) and
+  else if ((direction == m_layout.m_leftward) and
            (player_pos.x + m_speed * m_dt < 0.0f))
     return true;
-  else if ((direction == sf::Keyboard::S) and
+  else if ((direction == m_layout.m_backward) and
            (player_pos.y + m_speed * m_dt > win_size.y))
     return true;
-  else if ((direction == sf::Keyboard::D) and
+  else if ((direction == m_layout.m_rightward) and
            (player_pos.x + m_speed * m_dt > win_size.x))
     return true;
   else

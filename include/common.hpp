@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics/Font.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/System/Vector2.hpp>
@@ -38,4 +39,21 @@ public:
 struct GlobalFlags {
   std::atomic_bool quit{false};
   std::atomic_bool player_alive{true};
+};
+
+enum class LayoutType {
+    WASD,
+    IJKL
+};
+
+struct Layout {
+    public:
+        sf::Keyboard::Key m_forward;
+        sf::Keyboard::Key m_backward;
+        sf::Keyboard::Key m_rightward;
+        sf::Keyboard::Key m_leftward;
+        sf::Keyboard::Key m_shoot;
+
+        Layout(const LayoutType &layout);
+        ~Layout() = default;
 };

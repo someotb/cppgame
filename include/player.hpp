@@ -8,6 +8,7 @@
 #include <SFML/Window/Window.hpp>
 #include <cstddef>
 #include <ctime>
+#include <string>
 #include <vector>
 
 class Bullet : public Object {
@@ -39,9 +40,12 @@ private:
   float m_dt;
   std::vector<Bullet> m_bullets;
   StatusBar m_bar;
+  Layout m_layout;
 
 public:
-  void actions_handler(sf::RenderWindow &window, GlobalFlags& gFlags);
+  void actions_handler(sf::RenderWindow &window, GlobalFlags &gFlags);
+
+  void movement_handler(sf::RenderWindow &window);
 
   bool player_out(sf::Vector2u &win_size, const sf::Keyboard::Key &direction);
 
@@ -73,6 +77,7 @@ public:
 
   sf::CircleShape get_player() { return m_player; }
 
-  Player(const float radius, const std::size_t point_count);
+  Player(const float radius, const std::size_t point_count,
+         const Layout layout);
   ~Player() = default;
 };
