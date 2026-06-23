@@ -19,10 +19,10 @@ int main(int argc, char *argv[]) {
   GlobalFlags gFlags;
 
   // Players
-  Player player(10, 100, Layout(LayoutType::WASD));
+  Player player(10, 100, Layout(LayoutType::WASD), ObjectDirectionType::UP);
   player.set_speed(700.0f);
 
-  Player enemy(10, 100, Layout(LayoutType::IJKL));
+  Player enemy(10, 100, Layout(LayoutType::IJKL), ObjectDirectionType::DOWN);
   enemy.set_speed(700.0f);
 
   // Status bar

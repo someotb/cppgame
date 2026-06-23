@@ -8,10 +8,11 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <algorithm>
+#include <stdexcept>
 
 Player::Player(const float radius, const std::size_t point_count,
-               const Layout layout)
-    : Object(100), m_layout(std::move(layout)) {
+               const Layout layout, const ObjectDirectionType objDirection)
+    : Object(100), m_layout(std::move(layout)), m_obj_direction(std::move(objDirection)) {
   m_player.setRadius(radius);
   m_player.setPointCount(point_count);
   m_player.setOutlineColor(sf::Color::Magenta);
@@ -43,7 +44,7 @@ void Player::drow_objects(sf::RenderWindow &window) {
 
   // BULLET
   for (auto &b : m_bullets) {
-    b.move_bullet(m_dt);
+    b.move_bullet(m_dt, m_obj_direction);
     window.draw(b.get_bullet());
   }
 }
@@ -121,7 +122,18 @@ Bullet::Bullet(const float radius, const float point_count,
   m_velocity = velocity;
 }
 
-void Bullet::move_bullet(const float dt) { m_bullet.move(0, -m_velocity * dt); }
+void Bullet::move_bullet(const float dt, const ObjectDirectionType type) {
+  switch (type) {
+  case ObjectDirectionType::UP:
+    m_bullet.move(0, -m_velocity * dt);
+    break;
+  case ObjectDirectionType::DOWN:
+    m_bullet.move(0, m_velocity * dt);
+    break;
+  default:
+    throw std::invalid_argument("Use supported ObjectDirectionType(UP, DOWN)");
+  }
+}
 
 bool Bullet::bullet_is_out() const {
   auto bulletPos = get_pos();

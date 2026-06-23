@@ -27,6 +27,6 @@ Layout::Layout(const LayoutType &layout) {
     m_shoot = sf::Keyboard::Key::N;
     break;
   default:
-    throw std::invalid_argument("Use supported LayoutType(WASD, ARROWS)");
+    throw std::invalid_argument("Use supported LayoutType(WASD, IJKL)");
   }
 }

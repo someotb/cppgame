@@ -1,12 +1,13 @@
 #pragma once
 
 #include <SFML/Graphics/Font.hpp>
-#include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <atomic>
 
+// Base class Object
 class Object {
 protected:
   int m_health;
@@ -36,24 +37,26 @@ public:
   ~StatusBar() = default;
 };
 
+// Global Flags
 struct GlobalFlags {
   std::atomic_bool quit{false};
   std::atomic_bool player_alive{true};
 };
 
-enum class LayoutType {
-    WASD,
-    IJKL
-};
+// Player control layout
+enum class LayoutType { WASD, IJKL };
 
 struct Layout {
-    public:
-        sf::Keyboard::Key m_forward;
-        sf::Keyboard::Key m_backward;
-        sf::Keyboard::Key m_rightward;
-        sf::Keyboard::Key m_leftward;
-        sf::Keyboard::Key m_shoot;
+public:
+  sf::Keyboard::Key m_forward;
+  sf::Keyboard::Key m_backward;
+  sf::Keyboard::Key m_rightward;
+  sf::Keyboard::Key m_leftward;
+  sf::Keyboard::Key m_shoot;
 
-        Layout(const LayoutType &layout);
-        ~Layout() = default;
+  Layout(const LayoutType &layout);
+  ~Layout() = default;
 };
+
+// Object direction
+enum class ObjectDirectionType { UP, DOWN };
