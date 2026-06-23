@@ -12,7 +12,8 @@
 
 Player::Player(const float radius, const std::size_t point_count,
                const Layout layout, const ObjectDirectionType objDirection)
-    : Object(100), m_layout(std::move(layout)), m_obj_direction(std::move(objDirection)) {
+    : Object(100), m_layout(std::move(layout)),
+      m_obj_direction(std::move(objDirection)) {
   m_player.setRadius(radius);
   m_player.setPointCount(point_count);
   m_player.setOutlineColor(sf::Color::Magenta);
@@ -71,8 +72,6 @@ void Player::actions_handler(sf::RenderWindow &window, GlobalFlags &gFlags) {
 }
 
 void Player::movement_handler(sf::RenderWindow &window) {
-  static bool shoot_was_pressed = false;
-  bool shoot_pressed_now = sf::Keyboard::isKeyPressed(m_layout.m_shoot);
   auto winSize = window.getSize();
   if (sf::Keyboard::isKeyPressed(m_layout.m_forward) and
       not player_out(winSize, m_layout.m_forward))
@@ -86,9 +85,8 @@ void Player::movement_handler(sf::RenderWindow &window) {
   if (sf::Keyboard::isKeyPressed(m_layout.m_rightward) and
       not player_out(winSize, m_layout.m_rightward))
     m_player.move(m_speed * m_dt, 0.0f);
-  if (shoot_was_pressed == false and shoot_pressed_now == true)
+  if (sf::Keyboard::isKeyPressed(m_layout.m_shoot))
     create_bullet();
-  shoot_was_pressed = shoot_pressed_now;
 }
 
 bool Player::player_out(sf::Vector2u &win_size,
