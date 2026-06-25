@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
                enemyBar);
   enemy.set_speed(700.0f);
 
+  // sf::Clock for stable objects velocity for every machine
   sf::Clock clock;
 
   while (window.isOpen()) {
