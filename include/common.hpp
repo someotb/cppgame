@@ -23,20 +23,6 @@ public:
   virtual ~Object() = default;
 };
 
-class StatusBar : public Object {
-private:
-  sf::Font m_font;
-  sf::Vector2f m_position;
-
-public:
-  sf::Text m_statusBar;
-  void set_pos(const sf::Vector2f position) override { m_position = position; }
-  sf::Vector2f get_pos() const override { return m_position; }
-
-  StatusBar();
-  ~StatusBar() = default;
-};
-
 // Global Flags
 struct GlobalFlags {
   std::atomic_bool quit{false};
@@ -60,3 +46,18 @@ public:
 
 // Object direction
 enum class ObjectDirectionType { UP, DOWN };
+
+// Status bar
+class StatusBar : public Object {
+private:
+  sf::Font m_font;
+  sf::Vector2f m_position;
+
+public:
+  sf::Text m_statusBar;
+  void set_pos(const sf::Vector2f position) override { m_position = position; }
+  sf::Vector2f get_pos() const override { return m_position; }
+
+  StatusBar();
+  ~StatusBar() = default;
+};

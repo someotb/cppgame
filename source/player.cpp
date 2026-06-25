@@ -11,15 +11,15 @@
 #include <stdexcept>
 
 Player::Player(const float radius, const std::size_t point_count,
-               const Layout layout, const ObjectDirectionType objDirection)
+               const Layout layout, const ObjectDirectionType objDirection,
+               const StatusBar bar)
     : Object(100), m_layout(std::move(layout)),
-      m_obj_direction(std::move(objDirection)) {
+      m_obj_direction(std::move(objDirection)), m_bar(std::move(bar)) {
   m_player.setRadius(radius);
   m_player.setPointCount(point_count);
   m_player.setOutlineColor(sf::Color::Magenta);
   m_player.setOutlineThickness(1);
   m_player.setFillColor(sf::Color::White);
-  StatusBar bar;
 }
 
 void Player::create_bullet() {
@@ -52,9 +52,22 @@ void Player::drow_objects(sf::RenderWindow &window) {
 
 void Player::status_bar(sf::RenderWindow &window) {
   sf::Vector2u winSize = window.getSize();
-  sf::Vector2u statusBar_pos(winSize.x - 150, winSize.y - 30);
-  m_bar.m_statusBar.setPosition(statusBar_pos.x, statusBar_pos.y);
-  m_bar.m_statusBar.setString("Healt: " + std::to_string(getHealth()));
+  switch (m_obj_direction) {
+  case ObjectDirectionType::UP: {
+    sf::Vector2u statusBar_pos(winSize.x - 255, winSize.y - 30);
+    m_bar.m_statusBar.setPosition(statusBar_pos.x, statusBar_pos.y);
+    m_bar.m_statusBar.setString("Player Healt: " + std::to_string(getHealth()));
+    break;
+  }
+  case ObjectDirectionType::DOWN: {
+    sf::Vector2u statusBar_pos(winSize.x - 255, 0);
+    m_bar.m_statusBar.setPosition(statusBar_pos.x, statusBar_pos.y);
+    m_bar.m_statusBar.setString("Enemy Healt: " + std::to_string(getHealth()));
+    break;
+  }
+  default:
+    throw std::invalid_argument("Use supported ObjectDirectionType(UP, DOWN)");
+  }
 }
 
 void Player::actions_handler(sf::RenderWindow &window, GlobalFlags &gFlags) {

@@ -77,7 +77,7 @@ public:
 
   sf::CircleShape get_player() { return m_player; }
 
-  Player(const float radius, const std::size_t point_count,
-         const Layout layout, const ObjectDirectionType objDirection);
+  Player(const float radius, const std::size_t point_count, const Layout layout,
+         const ObjectDirectionType objDirection, const StatusBar bar);
   ~Player() = default;
 };

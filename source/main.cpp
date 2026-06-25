@@ -19,14 +19,16 @@ int main(int argc, char *argv[]) {
   GlobalFlags gFlags;
 
   // Players
-  Player player(10, 100, Layout(LayoutType::WASD), ObjectDirectionType::UP);
+  StatusBar playerBar;
+  Player player(10, 100, Layout(LayoutType::WASD), ObjectDirectionType::UP,
+                playerBar);
   player.set_speed(700.0f);
 
-  Player enemy(10, 100, Layout(LayoutType::IJKL), ObjectDirectionType::DOWN);
+  StatusBar enemyBar;
+  Player enemy(10, 100, Layout(LayoutType::IJKL), ObjectDirectionType::DOWN,
+               enemyBar);
   enemy.set_speed(700.0f);
 
-  // Status bar
-  StatusBar bar;
   sf::Clock clock;
 
   while (window.isOpen()) {
@@ -51,7 +53,7 @@ int main(int argc, char *argv[]) {
     window.display();
 
     if (!gFlags.player_alive)
-        break;
+      break;
   }
 
   return 0;
