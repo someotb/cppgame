@@ -3,6 +3,7 @@
 #include "common.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Window.hpp>
@@ -35,6 +36,10 @@ public:
 class Player : public Object {
 private:
   sf::CircleShape m_player;
+  sf::RectangleShape m_topBorder;
+  sf::RectangleShape m_bottomBorder;
+  sf::RectangleShape m_leftBorder;
+  sf::RectangleShape m_rightBorder;
   float m_speed;
   float m_dt;
   std::vector<Bullet> m_bullets;

@@ -12,7 +12,7 @@
 #include <SFML/Window/VideoMode.hpp>
 
 int main(int argc, char *argv[]) {
-  sf::RenderWindow window(sf::VideoMode(800, 600), "cppgame");
+  sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "cppgame");
   window.setFramerateLimit(240);
 
   // Global Flags

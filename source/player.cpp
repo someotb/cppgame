@@ -20,6 +20,26 @@ Player::Player(const float radius, const std::size_t point_count,
   m_player.setOutlineColor(sf::Color::Magenta);
   m_player.setOutlineThickness(1);
   m_player.setFillColor(sf::Color::White);
+
+  // Top Border
+  m_topBorder.setSize(sf::Vector2f(WIDTH, 1.f));
+  m_topBorder.setPosition(0.f, 30.f);
+  m_topBorder.setFillColor(sf::Color::White);
+
+  // Bottom order
+  m_bottomBorder.setSize(sf::Vector2f(WIDTH, 1.f));
+  m_bottomBorder.setPosition(0.f, HEIGHT - 1.f - 30.f);
+  m_bottomBorder.setFillColor(sf::Color::White);
+
+  // Left Border
+  m_leftBorder.setSize(sf::Vector2f(1.f, HEIGHT - 60.f));
+  m_leftBorder.setPosition(0.f, 30.f);
+  m_leftBorder.setFillColor(sf::Color::White);
+
+  // Right order
+  m_rightBorder.setSize(sf::Vector2f(1.f, HEIGHT - 60.f));
+  m_rightBorder.setPosition(WIDTH - 1.f, 30.f);
+  m_rightBorder.setFillColor(sf::Color::White);
 }
 
 void Player::create_bullet() {
@@ -42,6 +62,10 @@ void Player::drow_objects(sf::RenderWindow &window) {
 
   // STATUS BAR
   window.draw(m_bar.m_statusBar);
+  window.draw(m_topBorder);
+  window.draw(m_bottomBorder);
+  window.draw(m_leftBorder);
+  window.draw(m_rightBorder);
 
   // BULLET
   for (auto &b : m_bullets) {
