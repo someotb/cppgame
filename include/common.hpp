@@ -7,6 +7,9 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <atomic>
 
+constexpr int WIDTH = 800;
+constexpr int HEIGHT = 600;
+
 // Base class Object
 class Object {
 protected:
