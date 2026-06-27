@@ -23,11 +23,13 @@ int main(int argc, char *argv[]) {
   Player player(10, 100, Layout(LayoutType::WASD), ObjectDirectionType::UP,
                 playerBar);
   player.set_speed(700.0f);
+  player.set_pos(sf::Vector2f(400.f, 500.f));
 
   StatusBar enemyBar;
   Player enemy(10, 100, Layout(LayoutType::IJKL), ObjectDirectionType::DOWN,
                enemyBar);
   enemy.set_speed(700.0f);
+  enemy.set_pos(sf::Vector2f(400.f, 75.f));
 
   // sf::Clock for stable objects velocity for every machine
   sf::Clock clock;
