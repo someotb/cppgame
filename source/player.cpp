@@ -130,16 +130,16 @@ bool Player::player_out(sf::Vector2u &win_size,
                         const sf::Keyboard::Key &direction) {
   auto player_pos = get_pos();
   if ((direction == m_layout.m_forward) and
-      (player_pos.y + m_speed * m_dt < 0.0f))
+      (player_pos.y + m_speed * m_dt < 40.f))
     return true;
   else if ((direction == m_layout.m_leftward) and
-           (player_pos.x + m_speed * m_dt < 0.0f))
+           (player_pos.x + m_speed * m_dt < 10.f))
     return true;
   else if ((direction == m_layout.m_backward) and
-           (player_pos.y + m_speed * m_dt > win_size.y))
+           (player_pos.y + m_speed * m_dt > win_size.y - 55.f))
     return true;
   else if ((direction == m_layout.m_rightward) and
-           (player_pos.x + m_speed * m_dt > win_size.x))
+           (player_pos.x + m_speed * m_dt > win_size.x - 25.f))
     return true;
   else
     return false;
